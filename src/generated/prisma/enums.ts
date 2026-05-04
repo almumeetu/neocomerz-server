@@ -9,10 +9,76 @@
 * 🟢 You can import this file directly.
 */
 
-export const Role = {
-  admin: 'admin',
-  customer: 'customer',
-  staff: 'staff'
+export const MediaType = {
+  image: 'image',
+  video: 'video'
 } as const
 
-export type Role = (typeof Role)[keyof typeof Role]
+export type MediaType = (typeof MediaType)[keyof typeof MediaType]
+
+
+export const MediaProvider = {
+  s3: 's3',
+  cloudinary: 'cloudinary',
+  local: 'local'
+} as const
+
+export type MediaProvider = (typeof MediaProvider)[keyof typeof MediaProvider]
+
+
+export const ProductStatus = {
+  active: 'active',
+  inactive: 'inactive',
+  draft: 'draft'
+} as const
+
+export type ProductStatus = (typeof ProductStatus)[keyof typeof ProductStatus]
+
+
+export const InventoryReason = {
+  sale: 'sale',
+  restock: 'restock',
+  return: 'return',
+  correction: 'correction',
+  manual: 'manual'
+} as const
+
+export type InventoryReason = (typeof InventoryReason)[keyof typeof InventoryReason]
+
+
+export const OrderStatus = {
+  pending: 'pending',
+  processing: 'processing',
+  shipped: 'shipped',
+  delivered: 'delivered',
+  cancelled: 'cancelled',
+  returned: 'returned'
+} as const
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus]
+
+
+export const PaymentStatus = {
+  unpaid: 'unpaid',
+  paid: 'paid',
+  refunded: 'refunded'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const CouponType = {
+  percentage: 'percentage',
+  fixed: 'fixed'
+} as const
+
+export type CouponType = (typeof CouponType)[keyof typeof CouponType]
+
+
+export const PaymentTransactionStatus = {
+  pending: 'pending',
+  success: 'success',
+  failed: 'failed'
+} as const
+
+export type PaymentTransactionStatus = (typeof PaymentTransactionStatus)[keyof typeof PaymentTransactionStatus]

@@ -8,6 +8,16 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcryptjs';
 
+const userSelect = {
+  id: true,
+  name: true,
+  email: true,
+  phone: true,
+  role: { select: { id: true, name: true } },
+  createdAt: true,
+  updatedAt: true,
+};
+
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) { }
@@ -28,46 +38,22 @@ export class UserService {
         email: dto.email,
         password: hashedPassword,
         phone: dto.phone,
-        role: dto.role,
+        roleId: dto.roleId,
       },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: userSelect,
     });
   }
 
   async findAll() {
     return this.prisma.user.findMany({
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: userSelect,
     });
   }
 
   async findOne(id: string) {
     const user = await this.prisma.user.findUnique({
       where: { id },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: userSelect,
     });
     if (!user) {
       throw new NotFoundException(`User with id ${id} not found`);
@@ -82,7 +68,7 @@ export class UserService {
     if (dto.name !== undefined) data.name = dto.name;
     if (dto.email !== undefined) data.email = dto.email;
     if (dto.phone !== undefined) data.phone = dto.phone;
-    if (dto.role !== undefined) data.role = dto.role;
+    if (dto.roleId !== undefined) data.roleId = dto.roleId;
     if (dto.password !== undefined) {
       data.password = await bcrypt.hash(dto.password, 10);
     }
@@ -90,15 +76,7 @@ export class UserService {
     return this.prisma.user.update({
       where: { id },
       data,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      select: userSelect,
     });
   }
 
