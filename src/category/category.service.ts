@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { PrismaService } from '../../src/prisma/prisma.service';
@@ -7,8 +7,20 @@ import { PrismaService } from '../../src/prisma/prisma.service';
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) { }
 
-  create(createCategoryDto: CreateCategoryDto) {
-    const {parentId, ...data} = createCategoryDto;
+  async create(createCategoryDto: CreateCategoryDto) {
+    const { parentId, ...data } = createCategoryDto;
+
+    // If parentId is provided, validate that the parent category exists
+    if (parentId) {
+      const parentCategory = await this.prisma.category.findUnique({
+        where: { id: parentId }
+      });
+
+      if (!parentCategory) {
+        throw new BadRequestException(`Parent category with ID ${parentId} not found`);
+      }
+    }
+
     return this.prisma.category.create({
       data: {
         ...data,
@@ -16,13 +28,13 @@ export class CategoryService {
           connect: { id: parentId }
         } : undefined
       }
-    })
+    });
   }
 
   findAll() {
     return this.prisma.category.findMany({
       where: {
-        parentId : null
+        parentId: null
       },
       include: {
         children: {
@@ -36,7 +48,7 @@ export class CategoryService {
 
   findOne(id: number) {
     return this.prisma.category.findUnique({
-      where:{
+      where: {
         id: id.toString()
       }
     })

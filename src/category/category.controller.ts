@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
-import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBody, ApiNotFoundResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CategoryResponseDto } from './dto/category-response.dto';
 
 @ApiTags('Categories')
@@ -11,6 +11,10 @@ export class CategoryController {
   constructor(private readonly categoryService: CategoryService) { }
 
   @ApiOperation({ summary: 'Create a new category' })
+  @ApiBody({
+    type: CreateCategoryDto,
+    description: 'Category data to create',
+  })
   @ApiResponse({
     status: 201,
     description: 'Category created successfully',
@@ -21,6 +25,7 @@ export class CategoryController {
   })
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
+    console.log('Hello Create category api', createCategoryDto)
     return this.categoryService.create(createCategoryDto);
   }
 
@@ -53,6 +58,10 @@ export class CategoryController {
   }
 
   @ApiOperation({ summary: 'Update category by ID' })
+  @ApiBody({
+    type: UpdateCategoryDto,
+    description: 'Category data to update',
+  })
   @ApiResponse({
     status: 200,
     description: 'Category updated successfully',
