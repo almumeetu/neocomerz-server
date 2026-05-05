@@ -3,6 +3,8 @@ import { NestFactory } from '@nestjs/core';
 import { VersioningType, ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as express from 'express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,6 +14,9 @@ async function bootstrap() {
     type: VersioningType.URI,
     defaultVersion: '1',
   });
+
+  // Serve static files from public directory (outside API prefix)
+  app.use(express.static(join(process.cwd(), 'public')));
 
   app.useGlobalPipes(
     new ValidationPipe({

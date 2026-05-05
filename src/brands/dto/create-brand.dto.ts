@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsOptional } from "class-validator";
 
 export class CreateBrandDto {
     @ApiProperty({ description: 'Brand Name' })
@@ -12,8 +12,8 @@ export class CreateBrandDto {
     @IsNotEmpty()
     slug: string;
 
-    @ApiProperty({ description: 'Brand Logo URL' })
+    @ApiProperty({ description: 'Brand Logo URL', required: false })
     @IsString()
-    @IsNotEmpty()
-    logoUrl: string;
+    @IsOptional()
+    logoUrl?: string;
 }
