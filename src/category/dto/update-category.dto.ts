@@ -22,5 +22,5 @@ export class UpdateCategoryDto extends PartialType(CreateCategoryDto) {
         required: false,
         nullable: true
     })
-    parentId?: string;
+    parentId?: string | null;
 }

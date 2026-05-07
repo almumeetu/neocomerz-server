@@ -54,7 +54,7 @@ export class CategoryController {
   })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoryService.findOne(+id);
+    return this.categoryService.findOne(id);
   }
 
   @ApiOperation({ summary: 'Update category by ID' })
@@ -75,7 +75,7 @@ export class CategoryController {
   })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryService.update(+id, updateCategoryDto);
+    return this.categoryService.update(id, updateCategoryDto);
   }
 
   @ApiOperation({ summary: 'Delete category by ID' })
@@ -91,6 +91,6 @@ export class CategoryController {
   })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoryService.remove(+id);
+    return this.categoryService.remove(id);
   }
 }

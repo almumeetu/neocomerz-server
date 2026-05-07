@@ -44,7 +44,7 @@ export class BrandsService {
 
   async update(id: string, updateBrandDto: UpdateBrandDto, file?: Express.Multer.File) {
     const existingBrand = await this.findOne(id);
-    let logoUrl = updateBrandDto.logoUrl;
+    let logoUrl: string | null | undefined = updateBrandDto.logoUrl;
 
     if (file) {
       // Delete old logo if it exists
@@ -52,6 +52,11 @@ export class BrandsService {
         await this.uploadService.deleteFile(existingBrand.logoUrl);
       }
       logoUrl = await this.uploadService.uploadFile(file, 'brands');
+    } else if (updateBrandDto.logoUrl === '') {
+      if (existingBrand.logoUrl) {
+        await this.uploadService.deleteFile(existingBrand.logoUrl);
+      }
+      logoUrl = null;
     }
 
     return this.prisma.brand.update({
