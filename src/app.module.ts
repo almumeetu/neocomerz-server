@@ -8,6 +8,22 @@ import { AuthModule } from './auth/auth.module';
 import { AddressModule } from './address/address.module';
 import { CategoryModule } from './category/category.module';
 import { BrandsModule } from './brands/brands.module';
+import { ProductModule } from './product/product.module';
+import { AttributeModule } from './attribute/attribute.module';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { PaymentModule } from './payment/payment.module';
+import { WishlistModule } from './wishlist/wishlist.module';
+import { ReviewModule } from './review/review.module';
+import { CouponModule } from './coupon/coupon.module';
+import { RoleModule } from './role/role.module';
+import { ProfileModule } from './profile/profile.module';
+import { NotificationModule } from './notification/notification.module';
+import { ShipmentModule } from './shipment/shipment.module';
+import { SearchModule } from './search/search.module';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { ActivityLogModule } from './activity-log/activity-log.module';
 
 @Module({
   imports: [
@@ -19,7 +35,23 @@ import { BrandsModule } from './brands/brands.module';
     AuthModule,
     AddressModule,
     CategoryModule,
-    BrandsModule
+    BrandsModule,
+    ProductModule,
+    AttributeModule,
+    CartModule,
+    OrderModule,
+    InventoryModule,
+    PaymentModule,
+    WishlistModule,
+    ReviewModule,
+    CouponModule,
+    RoleModule,
+    ProfileModule,
+    NotificationModule,
+    ShipmentModule,
+    SearchModule,
+    DashboardModule,
+    ActivityLogModule,
   ],
   controllers: [AppController],
   providers: [AppService],
