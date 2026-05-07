@@ -73,6 +73,11 @@ export type Brand = Prisma.BrandModel
  */
 export type Product = Prisma.ProductModel
 /**
+ * Model Tag
+ * 
+ */
+export type Tag = Prisma.TagModel
+/**
  * Model ProductImage
  * 
  */
