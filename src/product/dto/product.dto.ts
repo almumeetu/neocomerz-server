@@ -56,6 +56,11 @@ export class CreateProductDto {
   @ApiProperty({ example: 'category-uuid' })
   @IsUUID()
   categoryId: string;
+
+  @ApiPropertyOptional({ example: 'unit-uuid' })
+  @IsOptional()
+  @IsUUID()
+  unitId?: string;
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}

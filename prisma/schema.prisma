@@ -238,6 +238,20 @@ model Brand {
   @@map("brands")
 }
 
+model Unit {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("units")
+}
+
 // ======================================================
 // 📦 5. PRODUCT SYSTEM (CORE)
 // ======================================================
@@ -263,6 +277,9 @@ model Product {
 
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
+
+  unit   Unit?   @relation(fields: [unitId], references: [id])
+  unitId String? @map("unit_id")
 
   // media
   images ProductImage[]

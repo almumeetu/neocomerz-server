@@ -18,6 +18,7 @@ import {
 const productInclude = {
   brand: true,
   category: true,
+  unit: true,
   media: { include: { media: true }, orderBy: { sortOrder: 'asc' as const } },
   variants: { include: { attributes: { include: { attributeValue: true } } } },
 };
@@ -30,7 +31,7 @@ export class ProductService {
   ) {}
 
   async create(dto: CreateProductDto) {
-    await this.ensureBrandAndCategory(dto.brandId, dto.categoryId);
+    await this.ensureBrandCategoryAndUnit(dto.brandId, dto.categoryId, dto.unitId);
     return this.prisma.product.create({
       data: dto,
       include: productInclude,
@@ -86,11 +87,12 @@ export class ProductService {
 
   async update(id: string, dto: UpdateProductDto) {
     await this.findOne(id);
-    if (dto.brandId || dto.categoryId) {
+    if (dto.brandId || dto.categoryId || dto.unitId) {
       const current = await this.prisma.product.findUniqueOrThrow({ where: { id } });
-      await this.ensureBrandAndCategory(
+      await this.ensureBrandCategoryAndUnit(
         dto.brandId ?? current.brandId,
         dto.categoryId ?? current.categoryId,
+        dto.unitId ?? (current as any).unitId,
       );
     }
     return this.prisma.product.update({
@@ -272,12 +274,14 @@ export class ProductService {
     return { message: 'Variant deleted successfully' };
   }
 
-  private async ensureBrandAndCategory(brandId: string, categoryId: string) {
-    const [brand, category] = await Promise.all([
+  private async ensureBrandCategoryAndUnit(brandId: string, categoryId: string, unitId?: string) {
+    const [brand, category, unit] = await Promise.all([
       this.prisma.brand.findUnique({ where: { id: brandId } }),
       this.prisma.category.findUnique({ where: { id: categoryId } }),
+      unitId ? (this.prisma as any).unit.findUnique({ where: { id: unitId } }) : null,
     ]);
     if (!brand) throw new BadRequestException(`Brand with ID ${brandId} not found`);
     if (!category) throw new BadRequestException(`Category with ID ${categoryId} not found`);
+    if (unitId && !unit) throw new BadRequestException(`Unit with ID ${unitId} not found`);
   }
 }

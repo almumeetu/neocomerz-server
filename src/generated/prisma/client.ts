@@ -90,6 +90,11 @@ export type Category = Prisma.CategoryModel
  */
 export type Brand = Prisma.BrandModel
 /**
+ * Model Unit
+ * 
+ */
+export type Unit = Prisma.UnitModel
+/**
  * Model Product
  * 
  */
