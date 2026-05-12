@@ -19,6 +19,7 @@ const productInclude = {
   brand: true,
   category: true,
   unit: true,
+  tags: true,
   media: { include: { media: true }, orderBy: { sortOrder: 'asc' as const } },
   variants: { include: { attributes: { include: { attributeValue: true } } } },
 };
@@ -31,9 +32,15 @@ export class ProductService {
   ) {}
 
   async create(dto: CreateProductDto) {
+    const { tagIds, ...productData } = dto;
     await this.ensureBrandCategoryAndUnit(dto.brandId, dto.categoryId, dto.unitId);
     return this.prisma.product.create({
-      data: dto,
+      data: {
+        ...productData,
+        tags: tagIds?.length
+          ? { connect: tagIds.map((id) => ({ id })) }
+          : undefined,
+      },
       include: productInclude,
     });
   }
@@ -87,6 +94,7 @@ export class ProductService {
 
   async update(id: string, dto: UpdateProductDto) {
     await this.findOne(id);
+    const { tagIds, ...productData } = dto;
     if (dto.brandId || dto.categoryId || dto.unitId) {
       const current = await this.prisma.product.findUniqueOrThrow({ where: { id } });
       await this.ensureBrandCategoryAndUnit(
@@ -97,7 +105,10 @@ export class ProductService {
     }
     return this.prisma.product.update({
       where: { id },
-      data: dto,
+      data: {
+        ...productData,
+        tags: tagIds ? { set: tagIds.map((tagId) => ({ id: tagId })) } : undefined,
+      },
       include: productInclude,
     });
   }

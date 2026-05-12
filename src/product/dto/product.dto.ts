@@ -61,6 +61,12 @@ export class CreateProductDto {
   @IsOptional()
   @IsUUID()
   unitId?: string;
+
+  @ApiPropertyOptional({ type: [String], description: 'Tag UUIDs' })
+  @IsOptional()
+  @IsArray()
+  @IsUUID(undefined, { each: true })
+  tagIds?: string[];
 }
 
 export class UpdateProductDto extends PartialType(CreateProductDto) {}
