@@ -28,6 +28,13 @@ export class ReviewService {
     });
   }
 
+  findAll() {
+    return this.prisma.review.findMany({
+      include: { product: true, user: { select: { id: true, name: true, email: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async update(id: string, dto: UpdateReviewDto) {
     await this.ensureReview(id);
     return this.prisma.review.update({ where: { id }, data: dto });

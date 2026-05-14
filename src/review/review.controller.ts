@@ -29,6 +29,12 @@ export class ReviewController {
     return this.reviewService.pending();
   }
 
+  @Get('reviews')
+  @ApiOperation({ summary: 'Get all reviews' })
+  findAll() {
+    return this.reviewService.findAll();
+  }
+
   @Patch('reviews/:id')
   @ApiOperation({ summary: 'Update review' })
   update(@Param('id') id: string, @Body() dto: UpdateReviewDto) {
